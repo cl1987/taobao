@@ -1,0 +1,70 @@
+/*顶部样式开始*/
+.top{
+	height:50px;
+	background-color:#f3f5f7;
+}
+.top-left .first-li{
+	color:#e34f48;
+}
+.top .top-left li{
+	height: 50px;
+	line-height:50px;
+	margin-right:12px;
+}
+
+.menu-active .dropdown-layer{
+	display: block;
+}
+.dropdown-layer li:hover{
+	background-color:#CCC;
+}
+.top-right .dropdown-toggle{
+	display:block;
+	height:50px;
+	padding:0 5px;
+	line-height: 50px;
+	text-align: center;
+	background-color: #fff;
+}
+.menu-active .dropdown-icon{
+	transform:rotateZ(180deg);
+}
+.dropdown-layer{
+	height:30px;
+	line-height:30px;
+	/*padding:0 5px;*/
+	white-space: nowrap;
+	top: 50px;
+	left: 0px;
+}
+.dropdown-layer li{
+	background-color:#fff;
+}
+/*顶部样式结束*/
+/*头部搜索开始*/
+.header{
+	height:100px;
+	background-color:gray;
+}
+/*头部搜索结束*/
+
+/*焦点区域开始*/
+.focus{
+	height:400px;
+	background-color: red;
+}
+/*焦点区域结束*/
+
+/*热销区域开始*/
+.todays{
+	height:200px;
+	background-color:yellow;
+}
+/*热销区域结束*/
+
+/*楼层一开始*/
+.floor{
+	height: 260px;
+	background-color: skyblue;
+}
+/*楼层一结束*/
