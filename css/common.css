@@ -39,7 +39,7 @@ a.link:hover{
 
 /*过渡属性开始*/
 .transition{
-	transition: all,0.5s;
+	transition: all 0.5s;
 }
 /*过渡属性结束*/
 
@@ -58,3 +58,11 @@ a.link:hover{
 	right:0;
 }
 /*下拉层共通部分结束*/
+.dropdown-loading{
+	width: 32px;
+	height: 32px;
+	margin:0 20px;
+	background-image: url(../images/loading.gif);
+	background-repeat: no-repeat;
+	background-position: center;
+}

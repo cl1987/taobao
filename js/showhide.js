@@ -164,42 +164,42 @@
 			})
 		})
 	}
-
-	//获取显示隐藏动画的方法
+	//返回执行动画的方法
 	function getShowHide($elem,options){
-		var showhideFn = slient;
+		var showHideFn=slient;
 		if(options.js){
-			showhideFn = js[options.mode]
+			showHideFn=js[options.mode]
 		}
-
-		//初始化
-		showhideFn.init($elem);
+		//初始化，防止用户多次点击
+		showHideFn.init($elem);
 
 		//返回对应的显示隐藏方法
 		return {
-			show:showhideFn.show,
-			hide:showhideFn.hide
+			show:showHideFn.show,
+			hide:showHideFn.hide
 		}
 	}
-
-	var DEFAULTS = {
+	// 容错处理
+	var DEFAULTS={
 		js:true,
 		mode:'fade'
 	}
-
 	//封装showHide插件
 	$.fn.extend({
 		showHide:function(options){
-			//遍历元素,实现隐式迭代
-			return this.each(function(){//实现单例模式
-				var $elem = $(this);
-				var showHideObj = $elem.data('showHideObj');
+			//遍历元素实现隐式迭代
+			return this.each(function(){//实现单例模式 暴露组件
+				var $elem=$(this)
+				var showHideObj=$elem.data('showHideObj')
 				if(!showHideObj){
-					options = $.extend({},DEFAULTS,options);
-					showHideObj = getShowHide($elem,options);
-					$elem.data('showHideObj',showHideObj);
+					options= $.extend({},DEFAULTS,options)
+					// 查看配置信息
+					// console.log(options)
+					showHideObj=getShowHide($elem,options)
+					// console.log(showHideObj)
+					$elem.data('showHideObj',showHideObj)	
 				}
-				//第二次进入该函数则是调用显示隐藏的动画方法
+				//第二次进入该函数则是调用该函数
 				if(typeof showHideObj[options] == 'function'){
 					showHideObj[options]($elem)
 				}

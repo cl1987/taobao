@@ -35,13 +35,13 @@
 		var $box = $('.box');
 		$box.showHide({
 			js:true,
-			mode:'fadeSlideLeftRight'
+			mode:'fade'
 		});
 		$('button').eq(0).on('click',function(){
-			$box.showHide('show').css('background','red');
+			$box.showHide('show').css('background-color',"blue");
 		});
 		$('button').eq(1).on('click',function(){
-			$box.showHide('hide');
+			$box.showHide('hide').css('background-color',"blue");
 		});
 		
 	});

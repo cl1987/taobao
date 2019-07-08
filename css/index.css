@@ -11,34 +11,48 @@
 	line-height:50px;
 	margin-right:12px;
 }
-
+.menu-active .dropdown-toggle{
+	background-color: #fff;
+}
 .menu-active .dropdown-layer{
 	display: block;
+}
+.menu-active .dropdown-icon{
+	transform:rotateZ(180deg);
+}
+.top .dropdown{
+	margin-left: 10px;
 }
 .dropdown-layer li:hover{
 	background-color:#CCC;
 }
-.top-right .dropdown-toggle{
+.top .dropdown-toggle{
 	display:block;
 	height:50px;
 	padding:0 5px;
 	line-height: 50px;
 	text-align: center;
-	background-color: #fff;
 }
-.menu-active .dropdown-icon{
-	transform:rotateZ(180deg);
-}
+
 .dropdown-layer{
 	height:30px;
 	line-height:30px;
+	border: 1px solid #f3f5f7;
+	background-color: #fff;
+	border-top: none;
 	/*padding:0 5px;*/
 	white-space: nowrap;
-	top: 50px;
-	left: 0px;
+	z-index: 99;
 }
 .dropdown-layer li{
+	height:30px;
+	padding: 0 5px;
+	line-height: 30px;
 	background-color:#fff;
+	white-space: nowrap;
+}
+.dropdown-layer li:hover{
+	background-color: #f3f5f7;
 }
 /*顶部样式结束*/
 /*头部搜索开始*/
