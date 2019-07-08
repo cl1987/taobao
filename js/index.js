@@ -6,7 +6,22 @@
 		mode:'fade'
 	});
 	$dropdown.on('dropdown-show dropdown-shown dropdown-hide dropdown-hidden',function(ev){
-		console.log(ev.type);
+		if(ev.type=='dropdown-show'){
+			var $elem=$(this);
+			var $layer=$elem.find('.dropdown-layer');
+			var url=$elem.data('load')
+			//如果没有地址，则无需加载数据
+			if(!url) return; 
+			$.getJSON(url,function(data){
+				//生成HTML
+				var html='';
+				for(var i=0;i<data.length;i++){
+					html+='<li><a href="'+data[i].url+'">'+data[i].name+'</a></li>'
+				}
+				//将HTML插入到下拉层中
+				$layer.html(html)
+			})
+		}
 	})
 	
 	
