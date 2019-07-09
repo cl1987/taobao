@@ -1,6 +1,6 @@
 (function($){
 	//运用面向对象的方法
-	function Dropdown($elem,options){
+	function Dropdown($elem,options){//这是个构造函数
 		//1.罗列属性
 		this.$elem=$elem;
 		this.options=options;
@@ -12,7 +12,7 @@
 		this.init();
 		// console.log(this.$layer)
 	}
-	Dropdown.prototype={
+	Dropdown.prototype={//构造函数的原型对象
 		constructor:Dropdown,
 		init:function(){
 			//1初始化显示隐藏插件
@@ -69,6 +69,7 @@
 			this.each(function(){
 				// console.log(this)这里的this是每一个dom节点
 				var $elem=$(this);
+				// console.log("111111",$elem)
 				var dropdown=$elem.data('dropdown')
 				if(!dropdown){
 					options=$elem.extend({},Dropdown.DEFAULTS,options);
