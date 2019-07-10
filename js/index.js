@@ -83,7 +83,7 @@
 		var $elem=$(this);
 		var $layer=$elem.find('.search-layer')
 		//1 生成html结构
-		var html=createSearchLayer(data,5)
+		var html=createSearchLayer(data,10)
 		//2 将内容插入到下拉层中
 		$elem.search('appendHTML',html)
 		//3.显示下拉层
@@ -119,41 +119,6 @@
 	//加载数据
 	$categorydropdown.on('dropdown-show dropdown-shown dropdown-hide dropdown-hidden',function(ev){
 		if(ev.type=='dropdown-show'){
-			/*
-				var url=$elem.data('load')
-				// console.log(url);
-				//如果没有地址，则无需加载数据
-				if(!url) return; 
-				//如果第一次进入则加载数据,后面再进入则不需要
-				if(!$elem.data('isloaded')){
-					$.getJSON(url,function(data){
-						// console.log(data)
-						//生成HTML
-						var html= '';
-						for(var i=0;i<data.length;i++){
-							html += '<dl class="category-details">'
-							html +=	'	<dt class="category-details-title fl">'
-							html +=	'		<a href="#" class="category-details-title-link">'+ data[i].title +'</a>'
-							html +=	'	</dt>'
-							html +=	'	<dd class="category-details-item fl">'
-							for(var j = 0;j<data[i].items.length;j++){
-								html +=	'<a href="#" class="link">'+data[i].items[j]+'</a>';
-								// html +=	'<a href="#" class="link">'+data[i].items[j]+'</a>';
-							}
-							html +=	'	</dd>'
-							html +=	'</dl>'		
-						}
-
-						//模拟加载数据
-						setTimeout(function(){
-							//将HTML插入到下拉层中
-							$layer.html(html) 
-							console.log(111)
-							//数据已经加载
-							$elem.data('isloaded',true)
-						},1000)	
-					})
-			*/
 			loadHtmlOnce($(this),buildLeftLayer)
 		}
 	})
@@ -181,7 +146,7 @@
 			console.log(111)
 			//数据已经加载
 			$elem.data('isloaded',true)
-		},1000)	
+		},2000)	
 	}
 ///分类列表逻辑结束....................
 

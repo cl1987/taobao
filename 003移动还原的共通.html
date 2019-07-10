@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Create rules</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.box{
+			width: 100px;
+			height: 100px;
+			background-color: red;
+			position: absolute;
+			top: 100px;
+			left: 0px;
+		}
+	</style>
+</head>
+<body>
+	<button>还原</button>
+	<button>移动</button>
+	<div class="box transition"></div>
+</body>
+<script src="js/jquery-1.12.4.js"></script>
+<script>
+	function init($elem){
+		this.$elem=$elem;
+		this.$elem.removeClass('transition')
+		this.currentX=parseFloat(this.$elem.css('left'))
+		this.currentY=parseFloat(this.$elem.css('top'))
+	}
+
+	function to(x,y,callback){
+		x = (typeof x=="number") ? x : this.currentX
+			y = (typeof y=="number") ? y : this.currentY
+			if(this.currentX==x && this.currentY==y) return; 
+			console.log(111)
+			this.$elem.trigger('move')
+			// this.$elem.css({
+			// 	left:x,
+			// 	top:y
+			// })
+			typeof callback=='function' && callback() 
+			this.$elem.trigger('moved')
+			//更新当前元素的位置
+			this.currentX=x
+			this.currentY=y
+	}
+
+
+	function Slide($elem){//这是个构造函数constructor
+		// this.$elem=$elem;
+		// this.$elem.removeClass('transition')
+		// this.currentX=parseFloat(this.$elem.css('left'))
+		// this.currentY=parseFloat(this.$elem.css('top'))
+		init.call(this,$elem)
+	}
+	Slide.prototype={
+		constructor:Slide,
+		to:function(x,y){
+			/*
+			x = (typeof x=="number") ? x : this.currentX
+			y = (typeof y=="number") ? y : this.currentY
+			if(this.currentX==x && this.currentY==y) return; 
+			console.log(111)
+			this.$elem.trigger('move')
+			this.$elem.css({
+				left:x,
+				top:y
+			})
+			this.$elem.trigger('moved')
+			//更新当前元素的位置
+			this.currentX=x
+			this.currentY=y
+			*/
+			to.call(this,x,y,function(){
+				this.$elem.css({
+				left:x,
+				top:y
+				}.bind(this))
+			}.bind(this))
+		},
+		x:function(x){
+			this.to(x)
+		},
+		y:function(y){
+			this.to(null,y)
+			console.log(111)
+		}
+	}
+	function Js($elem){//这是个构造函数constructor
+		// this.$elem=$elem;
+		// this.$elem.removeClass('transition')
+		// this.currentX=parseFloat(this.$elem.css('left'))
+		// this.currentY=parseFloat(this.$elem.css('top'))
+		init.call(this,$elem)
+	}
+	Js.prototype={
+		constructor:Js,
+		to:function(x,y,callback){
+			/*
+				x = (typeof x=="number") ? x : this.currentX
+				y = (typeof y=="number") ? y : this.currentY
+				if(this.currentX==x && this.currentY==y) return; 
+				console.log(111)
+				this.$elem.trigger('move')
+				/*
+				this.$elem.css({
+					left:x,
+					top:y
+				})
+				this.$elem
+				.stop()
+				.animate({
+					left:x,
+					top:y
+				},function(){
+					this.$elem.trigger('moved')
+				}.bind(this))
+				//更新当前元素的位置
+				this.currentX=x
+				this.currentY=y
+			*/
+			to.call(this,x,y,function(){
+				// this.$elem.css({
+				// 	left:x,
+				// 	top:y
+				// })
+				this.$elem
+				.stop()
+				.animate({
+					left:x,
+					top:y
+				},function(){
+					this.$elem.trigger('moved')
+				}.bind(this))
+			}.bind(this))
+		},
+			
+
+		x:function(x){
+			this.to(x)
+		},
+		y:function(y){
+			this.to(null,y)
+		}
+	}
+</script>
+<script>
+	var move=new Js($('.box'));//这个move是个实例对象
+	$('.box').on('move moved',function(ev){
+		console.log(ev.type)
+	})
+	$('button').eq(0).on('click',function(){
+		move.to(0,100)
+		// move.x(0)
+		// move.y(100)
+	})
+	$('button').eq(1).on('click',function(){
+		move.to(200,200)
+		// move.x(200)
+		// move.y(200)
+	})
+</script>
+</html>

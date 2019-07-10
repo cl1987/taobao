@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Create rules</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.box{
+			width: 100px;
+			height: 100px;
+			background-color: red;
+			position: absolute;
+			top: 100px;
+			left: 0px;
+		}
+	</style>
+</head>
+<body>
+	<button>还原</button>
+	<button>移动</button>
+	<div class="box transition"></div>
+</body>
+<script src="js/jquery-1.12.4.js"></script>
+<script src="js/move.js"></script>
+<script>
+	$('.box').move({});
+	$('.box').on('move moved',function(ev){
+		console.log(ev.type)
+	})
+	$('button').eq(0).on('click',function(){
+		$('.box').move('to',0,100)
+		// move.to(0,100)
+		// move.x(0)
+		// move.y(100)
+	})
+	$('button').eq(1).on('click',function(){
+		$('.box').move('to',200,200)
+		console.log($('.box'))
+		// move.to(200,200)
+		// move.x(200)
+		// move.y(200)
+	})
+</script>
+</html>

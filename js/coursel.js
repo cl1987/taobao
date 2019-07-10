@@ -20,7 +20,40 @@
 		constructor:Coursel,
 		init:function(){
 			if(this.options.slide){//划入划出
-
+				//1.隐藏所有图片，默认显示第一张
+				this.$elem.addClass('slide')
+				this.$courselItems.eq(this.now).css({left:0})
+				//获取当前物体的位置
+				this.$itemWidth=this.$courselItems.width
+				//2.底部按钮默认被选中
+				this.$courselBtn.eq(this.now).addClass('active')
+				//3.监听鼠标移入移除显示左右按钮
+				this.$elem.hover(function(){
+					this.$courselControls.show()
+				}.bind(this),function(){
+					this.$courselControls.show()
+				}.bind(this))
+				//初始化移动插件
+				this.$courselItems.move(this.options)
+				//4.事件代理。。监听点击左右按钮移动图片
+				this.$elem.on('click','.control-left',function(){
+					this._toggle(this._getCorrectIndex(this.now-1),-1)
+				}.bind(this))
+				this.$elem.on('click','.control-right',function(){
+					this._toggle(this._getCorrectIndex(this.now+1),1)
+				}.bind(this))
+				//5.是否自动轮播
+				if(this.options.autoplay){
+					//6.放入停止，移除开始
+					this.autoplay()
+					this.$elem.hover($.proxy(this.paused,this),$.proxy(this.autoplay,this))
+				}
+				//7.监听底部按钮事件
+				var _this=this
+				this.$courselBtn.on('click',function(){
+					var index=_this.$courselBtn.index(this)
+					_this._toggle(index)
+				})
 			}else{//淡入淡出
 				//1.隐藏所有图片，默认显示第一张
 				this.$elem.addClass('fade')
@@ -56,6 +89,12 @@
 				})
 			}
 		},
+		_toggle:function(index,direction){
+			//如果即将显示的和当前相同则不需要继续加载_fade函数
+			if(index==this.now) return
+			//1.移动当前的
+			this.$courselItems.eq(this.now).move('hide')
+		}
 		_fade:function(index){
 			//如果即将显示的和当前相同则不需要继续加载_fade函数
 			if(index==this.now) return
@@ -87,7 +126,7 @@
 	}
 	//不传参数时的默认配制信息
 	Coursel.DEFAULTS={
-		slide:false,
+		slide:true,
 		activeIndex:0,
 		js:true,
 		mode:'fade',
