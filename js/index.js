@@ -161,62 +161,183 @@
 	}
 ///分类列表逻辑结束....................
 
-//轮播图逻辑开始.....................
-	var $coursel = $('.carousel .carousel-wrap');
-	var item={};
-	var totalNum=$coursel.find('.carousel-img').length-1
-	var totalLoadNum=0;
-	var totalFn=0
-	// 1.开始加载
-	$coursel.on('coursel-show',totalFn=function(ev,index,elem){
-		if(!item[index]){
-			$coursel.trigger('coursel-load',index,elem)
-			/*
-				var $elem=$(elem);
-				var $img=$elem.find('.carousel-img')
+
+//轮播图懒加载共通开始.....................
+	function courselLazyLoad($elem){
+		var item={};
+		var totalNum=$elem.find('.carousel-img').length-1
+		var totalLoadNum=0;
+		var totalFn=0
+		// 1.开始加载
+		$elem.on('coursel-show',totalFn=function(ev,index,elem){
+			if(!item[index]){
+				$elem.trigger('coursel-load',[index,elem])	
+			}
+		})
+		// 2.执行加载
+		$elem.on('coursel-load',function(ev,index,elem){
+			var $elem=$(elem);
+			var $imgs=$elem.find('.carousel-img')
+			$imgs.each(function(){
+				var $img = $(this);
 				var imgUrl=$img.data('src')
 				loadImg(imgUrl,function(){
 					$img.attr('src',imgUrl)
 				},function(){
 					$img.attr('src','images/focus-carousel/placeholder.png')
 				})
-				//图片已经被加载
-				item[index]='isloaded'
-				totalLoadNum++
-				//所有图片都被加载则移除事件
-				if(totalLoadNum>totalNum){
-					$coursel.off('coursel-show',totalFn)
-				}	
-			*/
+			})
+			//图片已经被加载
+			item[index]='isloaded'
+			totalLoadNum++
+			//所有图片都被加载则移除事件
+			if(totalLoadNum>totalNum){
+				$elem.trigger('coursel-loaded')
+			}
+		})
+		// 3.加载完毕
+		$elem.on('coursel-loaded',function(){
+			$elem.off('coursel-show',totalFn)
+		})	
+	}	
+
+
+
+//轮播图懒加载共通结束.....................
+
+
+
+//轮播图逻辑开始.....................
+	var $coursel = $('.carousel .carousel-wrap');
+	/*
+		$coursel.item={};
+		$coursel.totalNum=$coursel.find('.carousel-img').length-1
+		$coursel.totalLoadNum=0;
+		$coursel.totalFn=0
+		// 1.开始加载
+		$coursel.on('coursel-show',$coursel.totalFn=function(ev,index,elem){
+			if(!$coursel.item[index]){
+				$coursel.trigger('coursel-load',[index,elem])	
+			}
+		})
+		// 2.执行加载
+		$coursel.on('coursel-load',function(ev,index,elem){
+			var $elem=$(elem);
+			var $img=$elem.find('.carousel-img')
+			var imgUrl=$img.data('src')
+			loadImg(imgUrl,function(){
+				$img.attr('src',imgUrl)
+			},function(){
+				$img.attr('src','images/focus-carousel/placeholder.png')
+			})
+			//图片已经被加载
+			$coursel.item[index]='isloaded'
+			$coursel.totalLoadNum++
+			//所有图片都被加载则移除事件
+			if($coursel.totalLoadNum>$coursel.totalNum){
+				$coursel.trigger('coursel-loaded')
+			}
+		})
+		// 3.加载完毕
+		$coursel.on('coursel-loaded',function(){
+			$coursel.off('coursel-show',$coursel.totalFn)
+		})
+	*/
+	courselLazyLoad($coursel)
+	$coursel.coursel({});
+// 轮播图逻辑结束.....................
+
+//今日热销开始
+	var $todaysCoursel = $('.today .carousel .carousel-wrap');
+	/*
+		$todaysCoursel.item={};
+		$todaysCoursel.totalNum=$todaysCoursel.find('.carousel-img').length-1
+		$todaysCoursel.totalLoadNum=0;
+		$todaysCoursel.totalFn=0
+		// 1.开始加载
+		$todaysCoursel.on('coursel-show',$todaysCoursel.totalFn=function(ev,index,elem){
+			if(!$todaysCoursel.item[index]){
+				$todaysCoursel.trigger('coursel-load',[index,elem])	
+			}
+		})
+		// 2.执行加载
+		$todaysCoursel.on('coursel-load',function(ev,index,elem){
+			var $elem=$(elem);
+			var $imgs=$elem.find('.carousel-img')
+			$imgs.each(function(){
+				var imgUrl=$img.data('src')
+				loadImg(imgUrl,function(){
+					$img.attr('src',imgUrl)
+				},function(){
+					$img.attr('src','images/focus-carousel/placeholder.png')
+				})
+			})
+			//图片已经被加载
+			$todaysCoursel.item[index]='isloaded'
+			$todaysCoursel.totalLoadNum++
+			//所有图片都被加载则移除事件
+			if($todaysCoursel.totalLoadNum>$todaysCoursel.totalNum){
+				$todaysCoursel.trigger('coursel-loaded')
+			}
+		})
+		// 3.加载完毕
+		$todaysCoursel.on('coursel-loaded',function(){
+			$todaysCoursel.off('coursel-show',$todaysCoursel.totalFn)
+		})
+	*/
+	courselLazyLoad($todaysCoursel)
+	$todaysCoursel.coursel({});
+//今日热销结束............
+
+//楼层逻辑开始............
+//楼层懒加载
+function floorLazyLoad($elem){
+	var item={};
+	var totalNum=$elem.find('.floor-img').length-1
+	var totalLoadNum=0;
+	var totalFn=0
+	// 1.开始加载
+	$elem.on('tab-show',totalFn=function(ev,index,elem){
+		if(!item[index]){
+			$elem.trigger('tab-load',[index,elem])	
 		}
 	})
 	// 2.执行加载
-	$coursel.on('coursel-load',function(ev,index,elem){
+	$elem.on('tab-load',function(ev,index,elem){
 		var $elem=$(elem);
-		var $img=$elem.find('.carousel-img')
-		var imgUrl=$img.data('src')
-		loadImg(imgUrl,function(){
-			$img.attr('src',imgUrl)
-		},function(){
-			$img.attr('src','images/focus-carousel/placeholder.png')
+		var $imgs=$elem.find('.floor-img')
+		$imgs.each(function(){
+			var $img = $(this);
+			var imgUrl=$img.data('src')
+			loadImg(imgUrl,function(){
+				$img.attr('src',imgUrl)
+			},function(){
+				$img.attr('src','images/focus-carousel/placeholder.png')
+			})
 		})
 		//图片已经被加载
 		item[index]='isloaded'
 		totalLoadNum++
 		//所有图片都被加载则移除事件
 		if(totalLoadNum>totalNum){
-			$coursel.trigger('coursel-loaded')
+			$elem.trigger('tab-loaded')
 		}
 	})
 	// 3.加载完毕
-	$coursel.on('coursel-loaded',function(ev,index,elem){
-		$coursel.off('coursel-show',totalFn)
+	$elem.on('tab-loaded',function(){
+		$elem.off('tab-show',totalFn)
+	})	
+}	
+	var $floor=$('.floor');
+	//遍历每一个楼层实现图片懒加载
+	$floor.each(function(){
+		floorLazyLoad($(this));
 	})
+	// $floor.on('tab-show',function(ev,index,elem){
 
-	
-	$coursel.coursel({});
-// 轮播图逻辑结束.....................
-		
+	// })
 
-	
+
+	$floor.tab({});
+//楼层逻辑结束............
 })(jQuery);
