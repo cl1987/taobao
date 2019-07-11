@@ -6,7 +6,7 @@
 		mode:'fade'
 	});
 
-	//加载数据共同函数
+	//1.加载数据共同函数
 	function loadHtmlOnce($elem,callback){
 		var url=$elem.data('load')
 		//如果没有地址，则无需加载数据
@@ -17,6 +17,17 @@
 				typeof callback=='function' && callback($elem,data)
 			})
 		}
+	}
+	//2.加载图片
+	function loadImg(imgUrl,success,error){
+		var image=new Image()
+		image.onload=function(){
+			typeof success == 'function' && success(imgUrl) 
+		}
+		image.onerror=function(){
+			typeof error == 'function' && error(imgUrl) 
+		}
+		image.src=imgUrl
 	}
 	//加载数据
 	$topdropdown.on('dropdown-show dropdown-shown dropdown-hide dropdown-hidden',function(ev){
@@ -146,15 +157,66 @@
 			console.log(111)
 			//数据已经加载
 			$elem.data('isloaded',true)
-		},2000)	
+		},1000)	
 	}
 ///分类列表逻辑结束....................
 
 //轮播图逻辑开始.....................
 	var $coursel = $('.carousel .carousel-wrap');
+	var item={};
+	var totalNum=$coursel.find('.carousel-img').length-1
+	var totalLoadNum=0;
+	var totalFn=0
+	// 1.开始加载
+	$coursel.on('coursel-show',totalFn=function(ev,index,elem){
+		if(!item[index]){
+			$coursel.trigger('coursel-load',index,elem)
+			/*
+				var $elem=$(elem);
+				var $img=$elem.find('.carousel-img')
+				var imgUrl=$img.data('src')
+				loadImg(imgUrl,function(){
+					$img.attr('src',imgUrl)
+				},function(){
+					$img.attr('src','images/focus-carousel/placeholder.png')
+				})
+				//图片已经被加载
+				item[index]='isloaded'
+				totalLoadNum++
+				//所有图片都被加载则移除事件
+				if(totalLoadNum>totalNum){
+					$coursel.off('coursel-show',totalFn)
+				}	
+			*/
+		}
+	})
+	// 2.执行加载
+	$coursel.on('coursel-load',function(ev,index,elem){
+		var $elem=$(elem);
+		var $img=$elem.find('.carousel-img')
+		var imgUrl=$img.data('src')
+		loadImg(imgUrl,function(){
+			$img.attr('src',imgUrl)
+		},function(){
+			$img.attr('src','images/focus-carousel/placeholder.png')
+		})
+		//图片已经被加载
+		item[index]='isloaded'
+		totalLoadNum++
+		//所有图片都被加载则移除事件
+		if(totalLoadNum>totalNum){
+			$coursel.trigger('coursel-loaded')
+		}
+	})
+	// 3.加载完毕
+	$coursel.on('coursel-loaded',function(ev,index,elem){
+		$coursel.off('coursel-show',totalFn)
+	})
+
+	
 	$coursel.coursel({});
-//轮播图逻辑结束.....................
+// 轮播图逻辑结束.....................
+		
 
-
-
+	
 })(jQuery);

@@ -10,7 +10,7 @@
 		x = (typeof x=="number") ? x : this.currentX
 		y = (typeof y=="number") ? y : this.currentY
 		if(this.currentX==x && this.currentY==y) return; 
-		console.log(111)
+		// console.log(111)
 		this.$elem.trigger('move')
 		typeof callback=='function' && callback() 
 		this.$elem.trigger('moved')
