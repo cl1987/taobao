@@ -29,6 +29,18 @@
 		}
 		image.src=imgUrl
 	}
+	//3.只加载一次数据
+	function getDataOnce($elem,url,callback){
+		var data=$elem.data('data');
+		if(!data){
+			$.getJSON(url,function(resData){
+				callback(resData);
+				$elem.data('data',resData)
+			})
+		}else{
+			callback(data)
+		}
+	}
 	//加载数据
 	$topdropdown.on('dropdown-show dropdown-shown dropdown-hide dropdown-hidden',function(ev){
 		if(ev.type=='dropdown-show'){
@@ -290,8 +302,8 @@
 //今日热销结束............
 
 //楼层逻辑开始............
-//楼层懒加载
-function floorLazyLoad($elem){
+//楼层图片懒加载
+function floorImgLazyLoad($elem){
 	var item={};
 	var totalNum=$elem.find('.floor-img').length-1
 	var totalLoadNum=0;
@@ -327,17 +339,127 @@ function floorLazyLoad($elem){
 	$elem.on('tab-loaded',function(){
 		$elem.off('tab-show',totalFn)
 	})	
-}	
-	var $floor=$('.floor');
-	//遍历每一个楼层实现图片懒加载
-	$floor.each(function(){
-		floorLazyLoad($(this));
+}
+//生成楼层html
+function buildFloorHtml(oneFloorData){
+	var html=''
+	html+='<div class="container">';
+	html+=buildFloorHeaderHtml(oneFloorData);
+	html+=buildFloorBodyHtml(oneFloorData);
+	html+='</div>';
+	return html
+}
+function buildFloorHeaderHtml(oneFloorData){
+	var html=''
+	html+=  '<div class="floor-hd">';
+	html+=	'	<h2 class="floor-title fl">';
+	html+=	'		<span class="floor-title-num">'+oneFloorData.num+'F</span>';
+	html+=	'		<span class="floor-title-text">'+oneFloorData.text+'</span>';
+	html+=	'	</h2>';
+	html+=	'	<ul class="tab-item-wrap fr">';
+	for(var i=0; i<oneFloorData.tabs.length;i++){
+		html+=	'	<li class="fl">';
+		html+=	'		<a class="tab-item" href="javascript:;">'+oneFloorData.tabs[i]+'</a>';
+		html+=	'	</li>';
+		if(i != oneFloorData.tabs.length-1){
+			html+=	'<li class="fl tab-divider"></li>';
+		}
+	}
+	html+=	'	</ul>';
+	html+=	'</div>';
+	return html
+}
+function buildFloorBodyHtml(oneFloorData){
+		var html = '';
+		html += '<div class="floor-bd">';
+		for(var i = 0;i<oneFloorData.items.length;i++){
+			html +=	'	<ul class="tab-panel clearfix">';
+			for(var j = 0;j<oneFloorData.items[i].length;j++){
+				html +=	'		<li class="floor-item fl">';
+				html +=	'			<p class="floor-item-pic">';
+				html +=	'				<a href="#">';
+				html +=	'					<img class="floor-img" src="images/floor/loading.gif" data-src="images/floor/'+oneFloorData.num+'/'+(i+1)+'/'+(j+1)+'.png" alt="">';
+				html +=	'				</a>';
+				html +=	'			</p>';
+				html +=	'			<p class="floor-item-name">';
+				html +=	'				<a class="link" href="#">'+oneFloorData.items[i][j].name+'</a>';
+				html +=	'			</p>';
+				html +=	'			<p class="floor-item-price">￥'+oneFloorData.items[i][j].price+' </p>';
+				html +=	'		</li>';
+			}
+			html +=	'	</ul>';
+		}
+		html +=	'</div>';
+		return html;
+	}
+//楼层html懒加载
+function floorHtmlLazyLoad(){
+	var item={};
+	var totalNum=$floor.length-1
+	var totalLoadNum=0;
+	var totalFn=0
+	// 1.开始加载
+	$doc.on('floor-show',totalFn=function(ev,index,elem){
+		if(!item[index]){
+			$doc.trigger('floor-load',[index,elem])	
+		}
 	})
-	// $floor.on('tab-show',function(ev,index,elem){
-
+	// 2.执行加载
+	$doc.on('floor-load',function(ev,index,elem){
+		getDataOnce($doc,'data/floor/floorData.json',function(data){
+			// console.log(data[index])
+			//1生成html结构
+			var html=buildFloorHtml(data[index]);
+			//2加载html结构
+			$(elem).html(html);
+			//3楼层图片懒加载
+			floorImgLazyLoad($(elem));
+			//4.激活选项卡
+			$(elem).tab({});
+		})
+		//图片已经被加载
+		item[index]='isloaded'
+		totalLoadNum++
+		//所有图片都被加载则移除事件
+		if(totalLoadNum>totalNum){
+			$doc.trigger('floor-loaded')
+		}
+	})
+	// 3.加载完毕
+	$doc.on('floor-loaded',function(){
+		$doc.off('floor-show',totalFn)
+	})	
+}
+//判断是否在可视区
+function isVisible($elem){
+	return ($win.height() + $win.scrollTop() > $elem.offset().top) && ($elem.offset().top + $elem.height() > $win.scrollTop())
+}	
+// $win.scrollTop()+$win.height()>$elem.offset().top && $elem.height+$elem.offset().top>$win.scrollTop()
+//return ($win.height() + $win.scrollTop() > $elem.offset().top) && ($elem.offset().top + $elem.height() > $win.scrollTop())
+	var $floor=$('.floor');
+	var $win=$(window)
+	var $doc=$(document)
+	floorHtmlLazyLoad();
+	//遍历每一个楼层实现图片懒加载
+	/*
+		$floor.each(function(){
+			floorImgLazyLoad($(this));
+		})
+	*/
+	// $doc.on('floor-show',function(ev,index,$elem){
+	// 	console.log(index,$elem)
 	// })
-
-
+	function timeToShow(){
+		$floor.each(function(index,elem){
+			if(isVisible($(elem))){//这里为什么不是$elem呢？还要加括号
+				$doc.trigger('floor-show',[index,elem])
+			}
+		})
+	}
+	$win.on('load scroll resize',function(){
+		clearTimeout($floor.showTimer)
+		$floor.showTimer=setTimeout(timeToShow,200)//这里的timeToShow怎么不带括号
+	})
 	$floor.tab({});
 //楼层逻辑结束............
 })(jQuery);

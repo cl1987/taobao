@@ -53,7 +53,7 @@
 			this.$tabItems.eq(this.now).removeClass('tab-item-active');
 			this.$tabPanels.eq(this.now).showHide('hide');
 			this.$tabItems.eq(index).addClass('tab-item-active');
-			this.$tabPanels.eq(index).show('show');
+			this.$tabPanels.eq(index).showHide('show');
 			this.now=index;
 		},
 		_getCorrectIndex:function(num){
