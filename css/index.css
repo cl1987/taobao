@@ -249,7 +249,7 @@
 }
 .focus .carousel-wrap,
 .focus .carousel-wrap .carousel-item img {
-	width: 728px;
+	width: 800px;
 	height: 504px;
 }
 .carousel-wrap{
@@ -282,7 +282,7 @@
 }
 
 .carousel-wrap .control {
-	display: none;
+	display: block;
 	position: absolute;
 	top:50%;
 	width: 30px;
@@ -311,7 +311,7 @@
 /*轮播图区域结束*/
 /*焦点区域右侧静态页面开始*/
 .focus .sidebar {
-	width: 249px;
+	width: 280px;
 }
 
 .focus-news {
@@ -378,7 +378,7 @@
 	z-index: 2;
 }
 .todays .carousel-wrap .carousel-item img {
-	width: 240px;
+	width: 260px;
 	height: 158px;
 	float: left;
 }
