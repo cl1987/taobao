@@ -510,10 +510,12 @@ function floorHtmlLazyLoad(){
 	})	
 }
 */
+
 //判断是否在可视区
 function isVisible($elem){
 	return ($win.height() + $win.scrollTop() > $elem.offset().top) && ($elem.offset().top + $elem.height() > $win.scrollTop())
-}	
+}
+	
 // $win.scrollTop()+$win.height()>$elem.offset().top && $elem.height+$elem.offset().top>$win.scrollTop()
 //return ($win.height() + $win.scrollTop() > $elem.offset().top) && ($elem.offset().top + $elem.height() > $win.scrollTop())
 	var $floor=$('.floor');
