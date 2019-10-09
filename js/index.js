@@ -313,7 +313,7 @@
 // 轮播图逻辑结束.....................
 
 //今日热销开始
-	var $todaysCoursel = $('.today .carousel .carousel-wrap');
+	var $todaysCoursel = $('.todays .carousel .carousel-wrap');
 	/*
 		$todaysCoursel.item={};
 		$todaysCoursel.totalNum=$todaysCoursel.find('.carousel-img').length-1

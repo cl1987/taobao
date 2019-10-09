@@ -476,7 +476,7 @@
 .elevator{
 	position: fixed;
 	top:50%;
-	left:10%;
+	left:5%;
 	margin-left: -660px;
 }
 .elevator-item{

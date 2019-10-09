@@ -170,14 +170,6 @@
 	}
 ///分类列表逻辑结束....................
 
-
-//轮播图懒加载共通开始.....................
-
-
-//轮播图懒加载共通结束.....................
-
-
-
 //轮播图逻辑开始.....................
 	var $coursel = $('.carousel .carousel-wrap');
 	lazyLoad({
@@ -206,8 +198,8 @@
 // 轮播图逻辑结束.....................
 
 //今日热销开始
-/*
-	var $todaysCoursel = $('.today .carousel-wrap');
+
+	var $todaysCoursel = $('.todays .carousel-wrap');
 	
 	lazyLoad({
 		totalNum:$todaysCoursel.find('.carousel-img').length - 1,
@@ -233,8 +225,8 @@
 		})
 	})
 	$todaysCoursel.coursel({});
-*/
 
+/*
 		var $todaysCoursel = $('.todays .carousel-wrap');
 		lazyLoad({
 			totalNum:$todaysCoursel.find('.carousel-img').length - 1,
@@ -259,7 +251,7 @@
 			})
 		})
 		$todaysCoursel.coursel({});
-
+*/
 //今日热销结束............
 
 //楼层逻辑开始............
